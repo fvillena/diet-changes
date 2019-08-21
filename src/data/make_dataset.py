@@ -8,13 +8,15 @@ data = pd.read_csv(
     )
 
 countries = pd.read_excel(
-    r'../../data/raw/country-region.xls'
+    r'../../data/raw/country-group.xls'
     )
-countries = countries[
-    countries['ISO2 Code'].isna() == False
-    ][
-        'Country Code'
-        ].tolist()
+
+continents = list(zip(countries['Country'],countries['Country Group']))
+continents = {key:val for key,val in continents}
+
+countries = countries[countries['ISO2 Code'].isna() == False]['Country Code'].tolist()
+
+data['Continent'] = data['Area'].map(continents)
 
 food_information = data[
     data['Element Code'].isin([5301,511])
@@ -24,6 +26,7 @@ food_information = data[
 
 food_information = food_information[[
     'Area', 
+    'Continent',
     'Item', 
     'Year Code', 
     'Value'
@@ -34,6 +37,7 @@ food_information_pivot = pd.pivot_table(
     values='Value', 
     index=[
         'Area', 
+        'Continent',
         'Year Code'
         ], 
     columns=[
@@ -52,6 +56,7 @@ food_information_pivot = food_information_pivot[
 food_information_pivot.sort_values(
     by=[
         'Area', 
+        'Continent',
         'Year Code'
         ], 
     inplace=True
@@ -61,8 +66,8 @@ food_information_pivot.fillna(
     inplace=True
     )
 
-food_information_pivot[food_information_pivot.columns[2:]] = food_information_pivot[
-    food_information_pivot.columns[2:]
+food_information_pivot[food_information_pivot.columns[3:]] = food_information_pivot[
+    food_information_pivot.columns[3:]
     ].divide(
         food_information_pivot.Population, 
         axis=0
@@ -74,9 +79,9 @@ food_information_pivot.drop(
     )
 
 standardizer = sklearn.preprocessing.StandardScaler()
-food_information_pivot[food_information_pivot.columns[2:]] = standardizer.fit_transform(
+food_information_pivot[food_information_pivot.columns[3:]] = standardizer.fit_transform(
     food_information_pivot[
-        food_information_pivot.columns[2:]
+        food_information_pivot.columns[3:]
         ]
     )
 
