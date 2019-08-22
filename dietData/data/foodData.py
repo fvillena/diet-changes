@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 import sklearn.preprocessing
 
 class UN_food():
-    def __init__(self, raw_dir=r'../../data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
-                 country_dir=r'../../data/raw/country-group.xls', rem_noISO2=True, constrain_food_info=True,
+    def __init__(self, raw_dir=r'~/PycharmProjects/diet-changes/data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
+                 country_dir=r'~/PycharmProjects/diet-changes/data/raw/country-group.xls', rem_noISO2=True, constrain_food_info=True,
                  standard = sklearn.preprocessing.StandardScaler()):
+
         self.raw_data = pd.read_csv(raw_dir, encoding='latin-1')
         self.processed_data = pd.read_csv(raw_dir, encoding='latin-1')
 
@@ -65,6 +66,6 @@ class UN_food():
 
         self.food_pivot = self.food_pivot.dropna()
 
-    def write_data(self, save_dir=r'../../data/processed/dataset.csv'):
+    def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
         self.food_pivot.to_csv(save_dir, index=False)
 
