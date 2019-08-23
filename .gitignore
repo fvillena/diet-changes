@@ -2,3 +2,4 @@ data/raw/*
 data/interim/*
 data/processed/*
 .ipynb_checkpoints
+__pycache__
