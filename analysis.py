@@ -11,16 +11,16 @@ data_save_dir = os.path.join(par_dir, r'data/processed/dataset.csv')
 name = "dataset_decomposition"
 plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
-data_cut = .1
-param_vals = (name, data_cut)
+data_cut_columns = .05
+data_cut_rows = .05
+param_vals = (name, data_cut_columns)
 processed_save_path = os.path.join(par_dir, "data/processed/%sCut%s.csv" % param_vals)
 
-if not os.path.exists(processed_save_path):
-    food_data = UN_food(
-        raw_dir=raw_data_dir,
-        country_dir=country_dir)
-    food_data.clean_data(data_ratio_cut=data_cut)
-    food_data.write_data(save_dir=processed_save_path)
+food_data = UN_food(
+    raw_dir=raw_data_dir,
+    country_dir=country_dir)
+food_data.clean_data(data_ratio_cut_columns=data_cut_columns, data_ratio_cut_rows=data_cut_rows, zero_as_na=True)
+food_data.write_data(save_dir=processed_save_path)
 
 dim_reduction = Reduction(processed_data_dir=processed_save_path,)
 
