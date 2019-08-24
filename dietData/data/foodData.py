@@ -6,7 +6,7 @@ import sklearn.preprocessing
 class UN_food():
     def __init__(self, raw_dir=r'~/PycharmProjects/diet-changes/data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
                  country_dir=r'~/PycharmProjects/diet-changes/data/raw/country-group.xls', rem_noISO2=True, constrain_food_info=True,
-                 standard = sklearn.preprocessing.StandardScaler()):
+                 standard = sklearn.preprocessing.StandardScaler(), zero_as_na=False):
 
         self.raw_data = pd.read_csv(raw_dir, encoding='latin-1')
         self.processed_data = pd.read_csv(raw_dir, encoding='latin-1')
@@ -37,6 +37,7 @@ class UN_food():
                                          columns=['Item']).reset_index()
 
         self.standardizer = standard
+        self.zero_as_na = zero_as_na
 
 
 
@@ -52,6 +53,7 @@ class UN_food():
         self.food_pivot = self.food_pivot[self.food_pivot.columns[data_ratio < data_ratio_cut]]
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
+        self.food_pivot.fillna(method='ffill', inplace=True)
 
 
         #normalize by the column
@@ -63,8 +65,6 @@ class UN_food():
 
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
 
-
-        self.food_pivot = self.food_pivot.dropna()
 
 
 
