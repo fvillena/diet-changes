@@ -16,7 +16,7 @@ class Reduction():
         reduced_data_dir=r'../data/processed/dataset_2d_pca.csv'
     ):
         
-        data_2d = method.fit_transform(self.processed_data[self.processed_data.columns[2:]])
+        data_2d = method.fit_transform(self.processed_data[self.processed_data.columns[3:]])
         data_2d = pd.concat([self.processed_data[['Area','Continent','Year Code']], pd.DataFrame(data_2d)], axis=1)
         data_2d.columns = ['Area','Continent','Year Code', 'x', 'y']
         data_2d.to_csv(
