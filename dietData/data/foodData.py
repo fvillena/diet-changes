@@ -20,7 +20,7 @@ class UN_food():
 
         self.processed_data["Continent"] = self.raw_data["Area"].map(self.continents)
 
-        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([5301,511])][self.processed_data['Area Code'].isin(self.countries)]
+        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([5301,511])]
 
         if constrain_food_info:
             self.food_info = self.food_info[[
