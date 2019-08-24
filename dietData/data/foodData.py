@@ -66,6 +66,10 @@ class UN_food():
 
         self.food_pivot = self.food_pivot.dropna()
 
+
+
+
+
     def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
         self.food_pivot.to_csv(save_dir, index=False)
 

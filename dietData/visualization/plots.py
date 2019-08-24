@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import sklearn.preprocessing
 import matplotlib.pyplot as plt
-
+import os
 class Scatter:
     def __init__(
         self,
@@ -11,16 +11,14 @@ class Scatter:
         self.dataset = pd.read_csv(bidimensional_dataset)
         self.le = sklearn.preprocessing.LabelEncoder()
         self.dataset['Continent'] = self.le.fit_transform(self.dataset['Continent'])
-    def plot(
-        self,
-        years = [
-            1980,
-            2010
-        ],
-        file_dir_prefix = r'../../report/figures/scatter_',
-        epsilon = 0.005,
-        extension = '.pdf'
-    ):
+
+    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',epsilon = 0.005,extension = '.png',
+             data_cut=.05):
+
+        save_dir = os.path.join(file_dir_prefix, "epsilon%sdataCut%s"%(epsilon, data_cut))
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+
         for year in years:
             fig, ax = plt.subplots(figsize=(30,30))
 
@@ -37,4 +35,8 @@ class Scatter:
             ax.set_ylim(self.dataset['y'].min(), self.dataset['y'].max())
             ax.legend()
             fig.tight_layout()
-            fig.savefig(file_dir_prefix + str(year) + extension)
+
+            full_file_path = os.path.join(save_dir, str(year) + extension)
+
+
+            fig.savefig(full_file_path)
