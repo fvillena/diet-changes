@@ -18,4 +18,4 @@ class Reduction():
         data_2d.to_csv(
             reduced_data_dir,
             index=False
-        )
+)

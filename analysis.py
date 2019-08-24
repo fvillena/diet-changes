@@ -8,11 +8,12 @@ par_dir = os.path.join(os.path.dirname(__file__))
 raw_data_dir = os.path.join(par_dir,r"data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv")
 country_dir = os.path.join(par_dir, r'data/raw/country-group.xls')
 data_save_dir = os.path.join(par_dir, r'data/processed/dataset.csv')
-name = "dataset"
+name = "dataset_decomposition"
 plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
-data_cut = .01
-processed_save_path = os.path.join(par_dir, "data/processed/%sCut%s.csv"%(name,data_cut))
+data_cut = .1
+param_vals = (name, data_cut)
+processed_save_path = os.path.join(par_dir, "data/processed/%sCut%s.csv" % param_vals)
 
 if not os.path.exists(processed_save_path):
     food_data = UN_food(
@@ -23,7 +24,7 @@ if not os.path.exists(processed_save_path):
 
 dim_reduction = Reduction(processed_data_dir=processed_save_path,)
 
-tsne_save_path = os.path.join(par_dir, "data/processed/tsne%sCut%s.csv"%(name, data_cut))
+tsne_save_path = os.path.join(par_dir, "data/processed/tsne%sCut%s.csv" % param_vals)
 dim_reduction.fit_transform(
     reduced_data_dir=tsne_save_path,
     method = sklearn.manifold.TSNE(verbose = 2,random_state = 11)
@@ -34,7 +35,7 @@ scatter_plots = Scatter(
 )
 
 
-plot_dir = os.path.join(par_dir, r'reports/figures/scatter_Cut%s'%(data_cut))
+plot_dir = os.path.join(par_dir, r'reports/figures/scatter_Cut%s%s' % param_vals)
 
 scatter_plots.plot(
     file_dir_prefix = plot_dir,

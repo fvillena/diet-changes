@@ -12,10 +12,9 @@ class Scatter:
         self.le = sklearn.preprocessing.LabelEncoder()
         self.dataset['Continent'] = self.le.fit_transform(self.dataset['Continent'])
 
-    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',epsilon = 0.005,extension = '.png',
-             data_cut=.05):
+    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',epsilon = 0.005,extension = '.png'):
 
-        save_dir = os.path.join(file_dir_prefix, "epsilon%sdataCut%s"%(epsilon, data_cut))
+        save_dir = os.path.join(file_dir_prefix)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
 
