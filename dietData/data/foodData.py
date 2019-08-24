@@ -6,7 +6,7 @@ import sklearn.preprocessing
 class UN_food():
     def __init__(self, raw_dir=r'~/PycharmProjects/diet-changes/data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
                  country_dir=r'~/PycharmProjects/diet-changes/data/raw/country-group.xls', rem_noISO2=True, constrain_food_info=True,
-                 standard = sklearn.preprocessing.StandardScaler(), zero_as_na=False):
+                 standard = sklearn.preprocessing.StandardScaler()):
 
         self.raw_data = pd.read_csv(raw_dir, encoding='latin-1')
         self.processed_data = pd.read_csv(raw_dir, encoding='latin-1')
@@ -37,22 +37,24 @@ class UN_food():
                                          columns=['Item']).reset_index()
 
         self.standardizer = standard
+
+
+
+
+
+    def clean_data(self, data_ratio_cut_columns=0.05,data_ratio_cut_rows=0.05, sort_keys=['Area', 'Continent','Year Code'], zero_as_na=False):
+
         self.zero_as_na = zero_as_na
 
-
-
-
-
-    def clean_data(self, data_ratio_cut=0.05, sort_keys=['Area', 'Continent','Year Code']):
-
-        self.data_cut = data_ratio_cut
+        self.data_ratio_cut_columns = data_ratio_cut_columns
+        self.data_ratio_cut_rows = data_ratio_cut_rows
 
 
         self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
-        data_ratio = self.food_pivot.isna().sum()/self.food_pivot.shape[0]
-        self.food_pivot = self.food_pivot[self.food_pivot.columns[data_ratio < data_ratio_cut]]
         if self.zero_as_na:
             self.food_pivot.replace(0,np.nan)
+        self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[0]*(1-self.data_ratio_cut_columns)), axis=1)
+        self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[1]*(1-self.data_ratio_cut_rows)), axis=0)
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
         self.food_pivot.fillna(method='ffill', inplace=True)
