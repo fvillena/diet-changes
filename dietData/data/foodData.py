@@ -52,6 +52,7 @@ class UN_food():
         self.food_pivot = self.food_pivot[self.food_pivot.columns[data_ratio < data_ratio_cut]]
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
+        self.food_pivot.fillna(method='ffill', inplace=True)
 
 
         #normalize by the column
@@ -63,8 +64,6 @@ class UN_food():
 
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
 
-
-        self.food_pivot = self.food_pivot.dropna()
 
     def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
         self.food_pivot.to_csv(save_dir, index=False)
