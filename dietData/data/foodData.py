@@ -51,6 +51,8 @@ class UN_food():
         self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
         data_ratio = self.food_pivot.isna().sum()/self.food_pivot.shape[0]
         self.food_pivot = self.food_pivot[self.food_pivot.columns[data_ratio < data_ratio_cut]]
+        if self.zero_as_na:
+            self.food_pivot.replace(0,np.nan)
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
         self.food_pivot.fillna(method='ffill', inplace=True)
