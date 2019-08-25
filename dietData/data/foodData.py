@@ -20,7 +20,7 @@ class UN_food():
 
         self.processed_data["Continent"] = self.raw_data["Area"].map(self.continents)
 
-        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([5301,511])]
+        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([645])]
 
         if constrain_food_info:
             self.food_info = self.food_info[[
@@ -59,11 +59,6 @@ class UN_food():
         self.food_pivot.fillna(method='backfill', inplace=True)
         self.food_pivot.fillna(method='ffill', inplace=True)
 
-
-        self.food_pivot[self.food_pivot.columns[3:]] = \
-            self.food_pivot[self.food_pivot.columns[3:]].divide(self.food_pivot.Population, axis=0)
-
-        self.food_pivot.drop(columns ='Population', inplace=True)
 
         self.food_pivot_not_scaled = self.food_pivot.copy()
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
