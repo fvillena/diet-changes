@@ -30,21 +30,21 @@ food_data = UN_food(
 food_data.clean_data(data_ratio_cut_columns=data_cut_columns, data_ratio_cut_rows=data_cut_rows, zero_as_na=True)
 food_data.write_data(save_dir=processed_scaled_save_path, save_dir_unscaled=processed_unscaled_save_path)
 
-# dim_reduction = Reduction(processed_data_dir=processed_scaled_save_path)
+dim_reduction = Reduction(processed_data_dir=processed_scaled_save_path)
 
-# dim_reduction.fit_transform(
-#     reduced_data_dir=dataset_2d_save_path,
-#     method = dim_reduction_method[1]
-# )
+dim_reduction.fit_transform(
+    reduced_data_dir=dataset_2d_save_path,
+    method = dim_reduction_method[1]
+)
 
-# scatter_plots = Scatter(
-#     bidimensional_dataset = dataset_2d_save_path
-# )
+scatter_plots = Scatter(
+    bidimensional_dataset = dataset_2d_save_path
+)
 
 
 
-# scatter_plots.plot(
-#     file_dir_prefix = plot_dir,
-#     years=list(range(1961,2014)),
-#     extension = '.png'
-# )
+scatter_plots.plot(
+    file_dir_prefix = plot_dir,
+    years=list(range(1961,2014)),
+    extension = '.png'
+)
