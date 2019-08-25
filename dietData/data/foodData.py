@@ -52,7 +52,7 @@ class UN_food():
 
         self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
         if self.zero_as_na:
-            self.food_pivot.replace(0,np.nan)
+            self.food_pivot.replace(0,np.nan, inplace=True)
         self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[0]*(1-self.data_ratio_cut_columns)), axis=1)
         self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[1]*(1-self.data_ratio_cut_rows)), axis=0)
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
@@ -60,13 +60,12 @@ class UN_food():
         self.food_pivot.fillna(method='ffill', inplace=True)
 
 
-        #normalize by the column
         self.food_pivot[self.food_pivot.columns[3:]] = \
             self.food_pivot[self.food_pivot.columns[3:]].divide(self.food_pivot.Population, axis=0)
 
         self.food_pivot.drop(columns ='Population', inplace=True)
 
-
+        self.food_pivot_not_scaled = self.food_pivot.copy()
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
 
 
@@ -74,6 +73,7 @@ class UN_food():
 
 
 
-    def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
+    def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv', save_dir_unscaled=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
         self.food_pivot.to_csv(save_dir, index=False)
+        self.food_pivot_not_scaled.to_csv(save_dir_unscaled, index=False)
 
