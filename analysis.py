@@ -17,11 +17,11 @@ zero_as_na = True
 param_vals = (dim_reduction_method[0], str(data_cut_columns), str(data_cut_rows), str(zero_as_na))
 processed_save_path = os.path.join(par_dir, "data/processed/dataset_cut-%s-%s_zanan-%s.csv" % param_vals[1:])
 
-# food_data = UN_food(
-#     raw_dir=raw_data_dir,
-#     country_dir=country_dir)
-# food_data.clean_data(data_ratio_cut_columns=data_cut_columns, data_ratio_cut_rows=data_cut_rows, zero_as_na=True)
-# food_data.write_data(save_dir=processed_save_path)
+food_data = UN_food(
+    raw_dir=raw_data_dir,
+    country_dir=country_dir)
+food_data.clean_data(data_ratio_cut_columns=data_cut_columns, data_ratio_cut_rows=data_cut_rows, zero_as_na=True)
+food_data.write_data(save_dir=processed_save_path)
 
 dim_reduction = Reduction(processed_data_dir=processed_save_path)
 
