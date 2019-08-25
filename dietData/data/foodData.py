@@ -20,7 +20,7 @@ class UN_food():
 
         self.processed_data["Continent"] = self.raw_data["Area"].map(self.continents)
 
-        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([5301,511])]
+        self.food_info = self.processed_data[self.processed_data["Element Code"].isin([645])]
 
         if constrain_food_info:
             self.food_info = self.food_info[[
@@ -42,29 +42,27 @@ class UN_food():
 
 
 
-    def clean_data(self, data_ratio_cut=0.05, sort_keys=['Area', 'Continent','Year Code']):
+    def clean_data(self, data_ratio_cut_columns=0.05,data_ratio_cut_rows=0.05, sort_keys=['Area', 'Continent','Year Code'], zero_as_na=False):
 
-        self.data_cut = data_ratio_cut
+        self.zero_as_na = zero_as_na
+
+        self.data_ratio_cut_columns = data_ratio_cut_columns
+        self.data_ratio_cut_rows = data_ratio_cut_rows
 
 
         self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
-        data_ratio = self.food_pivot.isna().sum()/self.food_pivot.shape[0]
-        self.food_pivot = self.food_pivot[self.food_pivot.columns[data_ratio < data_ratio_cut]]
+        if self.zero_as_na:
+            self.food_pivot.replace(0,np.nan, inplace=True)
+        self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[0]*(1-self.data_ratio_cut_columns)), axis=1)
+        self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[1]*(1-self.data_ratio_cut_rows)), axis=0)
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
+        self.food_pivot.fillna(method='ffill', inplace=True)
 
 
-        #normalize by the column
-        self.food_pivot[self.food_pivot.columns[3:]] = \
-            self.food_pivot[self.food_pivot.columns[3:]].divide(self.food_pivot.Population, axis=0)
-
-        self.food_pivot.drop(columns ='Population', inplace=True)
-
-
+        self.food_pivot_not_scaled = self.food_pivot.copy()
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
 
-
-        self.food_pivot = self.food_pivot.dropna()
 
 
     def correlation_finder(self):
@@ -75,6 +73,7 @@ class UN_food():
 
 
 
-    def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
+    def write_data(self, save_dir=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv', save_dir_unscaled=r'~/PycharmProjects/diet-changes/data/processed/dataset3.csv'):
         self.food_pivot.to_csv(save_dir, index=False)
+        self.food_pivot_not_scaled.to_csv(save_dir_unscaled, index=False)
 

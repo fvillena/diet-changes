@@ -4,3 +4,4 @@ data/processed/*
 reports/figures/*
 .ipynb_checkpoints
 __pycache__
+.vscode
