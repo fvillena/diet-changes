@@ -67,6 +67,11 @@ class UN_food():
         self.food_pivot = self.food_pivot.dropna()
 
 
+    def correlation_finder(self):
+        asdf=34
+
+
+
 
 
 

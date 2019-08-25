@@ -39,3 +39,8 @@ class Scatter:
 
 
             fig.savefig(full_file_path)
+
+            fig.clf()
+
+    # def tsne_dif(self, country="all", save_dir=r'../../report/figures/dif'):
+    #     if country="all":
