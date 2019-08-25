@@ -16,6 +16,8 @@ data_cut_rows = .05
 zero_as_na = True
 scaler = ("minmax",sklearn.preprocessing.MinMaxScaler())
 
+#vars
+
 param_vals = (dim_reduction_method[0], scaler[0], str(data_cut_columns), str(data_cut_rows), str(zero_as_na))
 processed_scaled_save_path = os.path.join(par_dir, r"data/processed/dataset_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals[1:])
 processed_unscaled_save_path = os.path.join(par_dir, r"data/processed/dataset_cut-%s-%s_zanan-%s.csv" % param_vals[2:])
