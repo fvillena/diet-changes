@@ -13,6 +13,13 @@ plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
 name = "dataset_decomposition"
 
+asdf= 92349
+dim_reduction_method = ("pca" ,sklearn.decomposition.PCA(2))
+data_cut_columns = .05
+data_cut_rows = .05
+zero_as_na = True
+scaler = ("minmax",sklearn.preprocessing.MinMaxScaler())
+
 param_vals = (dim_reduction_method[0], scaler[0], str(data_cut_columns), str(data_cut_rows), str(zero_as_na))
 
 processed_dir = os.path.join("data","processed")
@@ -30,12 +37,19 @@ plot_dir = os.path.join(par_dir, "reports","figures","scatter_reduction-%s_scale
 
 
 
-food_data = UN_food(
-    raw_dir=raw_data_dir,
-    country_dir=country_dir,
-    standard=scaler[1])
-food_data.clean_data(data_ratio_cut_columns=data_cut_columns, data_ratio_cut_rows=data_cut_rows, zero_as_na=True)
-food_data.write_data(save_dir=processed_scaled_save_path, save_dir_unscaled=processed_unscaled_save_path)
+
+asdf= 8348
+if not os.path.exists(processed_scaled_save_path):
+    raw_data_dir = os.path.join(par_dir, "data", "raw", "FoodBalanceSheets_E_All_Data_(Normalized).csv")
+    country_dir = os.path.join(par_dir, "data", "raw", "country-group.xls")
+    food_data = UN_food(
+        raw_dir=raw_data_dir,
+        country_dir=country_dir)
+    food_data.clean_data(data_ratio_cut_columns=data_cut_columns)
+    food_data.write_data(save_dir=processed_scaled_save_path)
+else:
+    food_data = Reduction(processed_data_dir=processed_scaled_save_path, )
+
 
 dim_reduction = Reduction(processed_data_dir=processed_scaled_save_path)
 
