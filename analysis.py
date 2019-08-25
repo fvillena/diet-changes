@@ -4,6 +4,7 @@ from dietData.visualization.plots import Scatter
 import sklearn.decomposition
 import sklearn.preprocessing
 import os
+import matplotlib.pyplot as plt
 
 par_dir = os.path.join(os.path.dirname(__file__))
 raw_data_dir = os.path.join(par_dir,r"data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv")
@@ -16,7 +17,9 @@ data_cut_rows = .05
 zero_as_na = True
 scaler = ("minmax",sklearn.preprocessing.MinMaxScaler())
 
-#vars
+data_save_dir = os.path.join(par_dir,"data","processed","dataset.csv")
+name = "dataset_decomposition"
+plot_dir = os.path.join(par_dir, "reports","figures","scatter_")
 
 param_vals = (dim_reduction_method[0], scaler[0], str(data_cut_columns), str(data_cut_rows), str(zero_as_na))
 processed_scaled_save_path = os.path.join(par_dir, r"data/processed/dataset_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals[1:])
@@ -43,10 +46,12 @@ scatter_plots = Scatter(
     bidimensional_dataset = dataset_2d_save_path
 )
 
-
+plot_dir = os.path.join(par_dir, "reports","figures", "scatter_Cut%s%s" % param_vals)
 
 scatter_plots.plot(
     file_dir_prefix = plot_dir,
     years=list(range(1961,2014)),
     extension = '.png'
 )
+
+adsf=234
