@@ -7,7 +7,8 @@ import json
 class UN_food():
     def __init__(self, raw_dir=r'~/PycharmProjects/diet-changes/data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
                  country_dir=r'~/PycharmProjects/diet-changes/data/raw/country-group.xls', rem_noISO2=True, constrain_food_info=True,
-                 standard = sklearn.preprocessing.StandardScaler()):
+                 standard = sklearn.preprocessing.StandardScaler(),
+                 continent = None):
 
         self.raw_data = pd.read_csv(raw_dir, encoding='latin-1')
         self.processed_data = pd.read_csv(raw_dir, encoding='latin-1')
@@ -20,6 +21,8 @@ class UN_food():
         self.countries = country[country['ISO2 Code'].isna() == False]['Country Code'].tolist()
 
         self.processed_data["Continent"] = self.raw_data["Area"].map(self.continents)
+        if continent != None:
+            self.processed_data = self.processed_data[self.processed_data.Continent == continent]        
 
         self.food_info = self.processed_data[self.processed_data["Element Code"].isin([645])]
 
@@ -51,7 +54,7 @@ class UN_food():
         self.data_ratio_cut_rows = data_ratio_cut_rows
 
 
-        self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
+
         if self.zero_as_na:
             self.food_pivot.replace(0,np.nan, inplace=True)
         self.food_pivot_with_na = self.food_pivot.copy()
