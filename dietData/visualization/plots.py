@@ -53,8 +53,15 @@ class Line:
         save_dir = os.path.join(file_dir_prefix)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
+        self.grouped_dataset = self.dataset.groupby(by='Year Code').agg('mean')
         for food in self.foods:
-            plt.axhline(y=self.dataset[food].mean(), label='Mean', linestyle='--',  alpha=0.5)
+            plt.plot(
+                self.grouped_dataset.reset_index()['Year Code'],
+                self.grouped_dataset[food], 
+                label='Mean', 
+                linestyle='--',  
+                alpha=0.5
+            )
             for country in countries:
                 plt.plot(
                 self.dataset[self.dataset.Area == country]['Year Code'],
