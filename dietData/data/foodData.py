@@ -71,9 +71,17 @@ class UN_food():
         asdf=34
 
     def make_report(self, report_path):
-        dropped_columns = list(set(self.food_pivot.columns) - set(self.food_pivot_with_na.columns))
+        dropped_columns = list(set(self.food_pivot_with_na.columns) - set(self.food_pivot.columns))
+        dropped_rows = pd.concat([self.food_pivot_with_na[['Area','Year Code']],self.food_pivot[['Area','Year Code']]]).drop_duplicates(keep=False)
+        dropped_rows = [tuple(r) for r in dropped_rows.values]
+        dropped_rows = list(set(dropped_rows))
         report = {
-            'dropped_columns' : dropped_columns
+            'raw_shape' : self.food_pivot_with_na.shape,
+            'processed_shape' : self.food_pivot.shape,
+            'n_dropped_columns' : len(dropped_columns),
+            'n_dropped_rows' : len(dropped_rows),
+            'dropped_columns' : dropped_columns,
+            'dropped_rows' : dropped_rows
         }
         with open(report_path, 'w', encoding='utf-8') as f:
             json.dump(report, f, ensure_ascii=False, indent=4)
