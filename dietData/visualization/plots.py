@@ -12,7 +12,7 @@ class Scatter:
         self.le = sklearn.preprocessing.LabelEncoder()
         self.dataset['Continent'] = self.le.fit_transform(self.dataset['Continent'])
 
-    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',epsilon = 0.005,extension = '.png'):
+    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',border = 1,epsilon = 0.05,extension = '.png'):
 
         save_dir = os.path.join(file_dir_prefix)
         if not os.path.exists(save_dir):
@@ -30,8 +30,8 @@ class Scatter:
                 ax.annotate(row['Area'], xy=(row['x']+epsilon, row['y']))
 
             ax.set_title('Projection of Food Consumptions in ' + str(year))
-            ax.set_xlim(self.dataset['x'].min(), self.dataset['x'].max())
-            ax.set_ylim(self.dataset['y'].min(), self.dataset['y'].max())
+            ax.set_xlim(self.dataset['x'].min()-border, self.dataset['x'].max()+border)
+            ax.set_ylim(self.dataset['y'].min()-border, self.dataset['y'].max()+border)
             ax.legend()
             fig.tight_layout()
 
