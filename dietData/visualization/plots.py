@@ -13,15 +13,16 @@ class Scatter:
         self.le = sklearn.preprocessing.LabelEncoder()
         self.dataset['Continent'] = self.le.fit_transform(self.dataset['Continent'])
 
-    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',border = 1,epsilon = 0.2,extension = '.png'):
+    def plot(self,years = [1980,2010],file_dir_prefix = r'../../report/figures/scatter_',border = 1,epsilon = 0.2,extension = '.png', voronoi = True):
 
         save_dir = os.path.join(file_dir_prefix)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         continent_data = self.dataset.groupby(by=['Continent','Year Code']).agg('median').reset_index()
         for year in years:
-            points = continent_data[continent_data['Year Code'] == year][['x','y']]
-            vor = scipy.spatial.Voronoi(points)
+            if voronoi:
+                points = continent_data[continent_data['Year Code'] == year][['x','y']]
+                vor = scipy.spatial.Voronoi(points)
             fig, ax = plt.subplots(figsize=(30,30))
 
             for continent in self.le.classes_:
@@ -32,11 +33,12 @@ class Scatter:
                         )
             for _, row in self.dataset[self.dataset['Year Code'] == year].iterrows():
                 ax.annotate(row['Area'], xy=(row['x']+epsilon, row['y']))
-            scipy.spatial.voronoi_plot_2d(
-                vor,ax,
-                show_points=False,
-                show_vertices = False
-            )
+            if voronoi:
+                scipy.spatial.voronoi_plot_2d(
+                    vor,ax,
+                    show_points=False,
+                    show_vertices = False
+                )
             ax.set_title('Projection of Food Consumptions in ' + str(year))
             ax.set_xlim(self.dataset['x'].min()-border, self.dataset['x'].max()+border)
             ax.set_ylim(self.dataset['y'].min()-border, self.dataset['y'].max()+border)
