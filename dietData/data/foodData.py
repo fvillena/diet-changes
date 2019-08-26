@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.preprocessing
+import json
 
 class UN_food():
     def __init__(self, raw_dir=r'~/PycharmProjects/diet-changes/data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv',
@@ -53,8 +54,10 @@ class UN_food():
         self.processed_data["Continent"] = self.processed_data["Area"].map(self.continents)
         if self.zero_as_na:
             self.food_pivot.replace(0,np.nan, inplace=True)
+        self.food_pivot_with_na = self.food_pivot.copy()
         self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[0]*(1-self.data_ratio_cut_columns)), axis=1)
         self.food_pivot = self.food_pivot.dropna(thresh=int(self.food_pivot.shape[1]*(1-self.data_ratio_cut_rows)), axis=0)
+        
         self.food_pivot.sort_values(by=sort_keys, inplace=True)
         self.food_pivot.fillna(method='backfill', inplace=True)
         self.food_pivot.fillna(method='ffill', inplace=True)
@@ -64,11 +67,16 @@ class UN_food():
         self.food_pivot[self.food_pivot.columns[3:]] = self.standardizer.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
 
 
-
     def correlation_finder(self):
         asdf=34
 
-
+    def make_report(self, report_path):
+        dropped_columns = list(set(self.food_pivot.columns) - set(self.food_pivot_with_na.columns))
+        report = {
+            'dropped_columns' : dropped_columns
+        }
+        with open(report_path, 'w', encoding='utf-8') as f:
+            json.dump(report, f, ensure_ascii=False, indent=4)
 
 
 
