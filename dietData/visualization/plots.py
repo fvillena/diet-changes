@@ -3,7 +3,7 @@ import pandas as pd
 import sklearn.preprocessing
 import matplotlib.pyplot as plt
 import os
-import scipy
+import scipy.spatial
 class Scatter:
     def __init__(
         self,
@@ -30,7 +30,7 @@ class Scatter:
                         label = continent,
                         s=300
                         )
-            for key, row in self.dataset[self.dataset['Year Code'] == year].iterrows():
+            for _, row in self.dataset[self.dataset['Year Code'] == year].iterrows():
                 ax.annotate(row['Area'], xy=(row['x']+epsilon, row['y']))
             scipy.spatial.voronoi_plot_2d(
                 vor,ax,
