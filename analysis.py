@@ -11,12 +11,12 @@ raw_data_dir = os.path.join(par_dir,r"data/raw/FoodBalanceSheets_E_All_Data_(Nor
 country_dir = os.path.join(par_dir, r'data/raw/country-group.xls')
 plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
-name = "dataset_decomposition"
+# name = "dataset_decomposition"
 
 asdf= 92349
 dim_reduction_method = ("pca" ,sklearn.decomposition.PCA(2))
-data_cut_columns = .05
-data_cut_rows = .05
+data_cut_columns = .2
+data_cut_rows = .12
 zero_as_na = True
 scaler = ("minmax",sklearn.preprocessing.MinMaxScaler())
 
@@ -62,7 +62,7 @@ scatter_plots = Scatter(
     bidimensional_dataset = dataset_2d_save_path
 )
 
-plot_dir = os.path.join(par_dir, "reports","figures", "scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
+plot_dir = os.path.join(par_dir, "reports","figures", "rowCut_%s" % param_vals)
 
 scatter_plots.plot(
     file_dir_prefix = plot_dir,
