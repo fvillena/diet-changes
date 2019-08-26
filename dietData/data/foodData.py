@@ -68,7 +68,7 @@ class UN_food():
 
 
     def correlation_finder(self):
-        asdf=34
+        pass
 
     def make_report(self, report_path):
         dropped_columns = list(set(self.food_pivot_with_na.columns) - set(self.food_pivot.columns))
