@@ -1,7 +1,7 @@
 data/raw/*
 data/interim/*
 data/processed/*
-reports/figures/*
+reports/*
 .ipynb_checkpoints
 __pycache__
 .vscode
