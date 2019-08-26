@@ -3,6 +3,7 @@ import pandas as pd
 import sklearn.preprocessing
 import matplotlib.pyplot as plt
 import os
+import scipy
 class Scatter:
     def __init__(
         self,
@@ -17,18 +18,25 @@ class Scatter:
         save_dir = os.path.join(file_dir_prefix)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
-
+        continent_data = self.dataset.groupby(by=['Continent','Year Code']).agg('median').reset_index()
         for year in years:
+            points = continent_data[continent_data['Year Code'] == year][['x','y']]
+            vor = scipy.spatial.Voronoi(points)
             fig, ax = plt.subplots(figsize=(30,30))
 
             for continent in self.le.classes_:
                 ax.scatter(self.dataset[self.dataset['Year Code'] == year][self.dataset['Continent'] == self.le.transform([continent])[0]]['x'],
                         self.dataset[self.dataset['Year Code'] == year][self.dataset['Continent'] == self.le.transform([continent])[0]]['y'],
-                        label = continent
+                        label = continent,
+                        s=100
                         )
             for key, row in self.dataset[self.dataset['Year Code'] == year].iterrows():
                 ax.annotate(row['Area'], xy=(row['x']+epsilon, row['y']))
-
+            scipy.spatial.voronoi_plot_2d(
+                vor,ax,
+                show_points=False,
+                show_vertices = False
+            )
             ax.set_title('Projection of Food Consumptions in ' + str(year))
             ax.set_xlim(self.dataset['x'].min()-border, self.dataset['x'].max()+border)
             ax.set_ylim(self.dataset['y'].min()-border, self.dataset['y'].max()+border)
