@@ -56,6 +56,17 @@ dim_reduction.fit_transform(
 
 dim_reduction.make_report(report_path=reduction_report_path)
 
+line_plots = Line(
+    not_normalized_dataset = processed_unscaled_save_path
+)
+
+
+line_plots.plot(
+    file_dir_prefix = line_plot_dir,
+    countries=['Chile','United States of America'],
+    extension = '.png'
+)
+
 scatter_plots = Scatter(
     bidimensional_dataset = dataset_2d_save_path
 )
@@ -67,15 +78,3 @@ scatter_plots.plot(
     extension = '.png'
 )
 
-
-
-line_plots = Line(
-    not_normalized_dataset = processed_unscaled_save_path
-)
-
-
-line_plots.plot(
-    file_dir_prefix = line_plot_dir,
-    countries=['Chile','United States of America'],
-    extension = '.png'
-)
