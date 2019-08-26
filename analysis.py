@@ -11,9 +11,7 @@ raw_data_dir = os.path.join(par_dir,r"data/raw/FoodBalanceSheets_E_All_Data_(Nor
 country_dir = os.path.join(par_dir, r'data/raw/country-group.xls')
 plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
-name = "dataset_decomposition"
 
-asdf= 92349
 dim_reduction_method = ("pca" ,sklearn.decomposition.PCA(2))
 data_cut_columns = .05
 data_cut_rows = .05
@@ -30,15 +28,8 @@ if not os.path.exists(os.path.join(par_dir,processed_dir)):
 processed_scaled_save_path = os.path.join(par_dir, processed_dir,"dataset_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals[1:])
 processed_unscaled_save_path = os.path.join(par_dir, processed_dir, "dataset_cut-%s-%s_zanan-%s.csv" % param_vals[2:])
 dataset_2d_save_path = os.path.join(par_dir, processed_dir, "dataset_2d_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals)
-
-
-
 plot_dir = os.path.join(par_dir, "reports","figures","scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
 
-
-
-
-asdf= 8348
 if not os.path.exists(processed_scaled_save_path):
     raw_data_dir = os.path.join(par_dir, "data", "raw", "FoodBalanceSheets_E_All_Data_(Normalized).csv")
     country_dir = os.path.join(par_dir, "data", "raw", "country-group.xls")
@@ -69,5 +60,3 @@ scatter_plots.plot(
     years=list(range(1961,2014)),
     extension = '.png'
 )
-
-adsf=234
