@@ -30,6 +30,7 @@ processed_unscaled_save_path = os.path.join(par_dir, processed_dir, "dataset_cut
 dataset_2d_save_path = os.path.join(par_dir, processed_dir, "dataset_2d_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals)
 plot_dir = os.path.join(par_dir, "reports","figures","scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
 preprocessing_report_path = os.path.join(par_dir, "reports", "preprocessing-report_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.json" % param_vals)
+reduction_report_path = os.path.join(par_dir, "reports", "reduction-report_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.json" % param_vals)
 
 if not os.path.exists(processed_scaled_save_path):
     raw_data_dir = os.path.join(par_dir, "data", "raw", "FoodBalanceSheets_E_All_Data_(Normalized).csv")
@@ -41,24 +42,26 @@ if not os.path.exists(processed_scaled_save_path):
     food_data.make_report(report_path=preprocessing_report_path)
     food_data.write_data(save_dir=processed_scaled_save_path, save_dir_unscaled=processed_unscaled_save_path)
 else:
-    food_data = Reduction(processed_data_dir=processed_scaled_save_path, )
+    food_data = Reduction(processed_data_dir=processed_scaled_save_path)
 
 
-# dim_reduction = Reduction(processed_data_dir=processed_scaled_save_path)
+dim_reduction = Reduction(processed_data_dir=processed_scaled_save_path)
 
-# dim_reduction.fit_transform(
-#     reduced_data_dir=dataset_2d_save_path,
-#     method = dim_reduction_method[1]
-# )
+dim_reduction.fit_transform(
+    reduced_data_dir=dataset_2d_save_path,
+    method = dim_reduction_method[1]
+)
 
-# scatter_plots = Scatter(
-#     bidimensional_dataset = dataset_2d_save_path
-# )
+dim_reduction.make_report(report_path=reduction_report_path)
 
-# plot_dir = os.path.join(par_dir, "reports","figures", "scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
+scatter_plots = Scatter(
+    bidimensional_dataset = dataset_2d_save_path
+)
 
-# scatter_plots.plot(
-#     file_dir_prefix = plot_dir,
-#     years=list(range(1961,2014)),
-#     extension = '.png'
-# )
+plot_dir = os.path.join(par_dir, "reports","figures", "scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
+
+scatter_plots.plot(
+    file_dir_prefix = plot_dir,
+    years=list(range(1961,2014)),
+    extension = '.png'
+)
