@@ -1,6 +1,7 @@
 from dietData.data.foodData import UN_food
 from dietData.data.dimReduction import Reduction
 from dietData.visualization.plots import Scatter
+from dietData.visualization.plots import Line
 import sklearn.decomposition
 import sklearn.preprocessing
 import os
@@ -9,7 +10,7 @@ import matplotlib.pyplot as plt
 par_dir = os.path.join(os.path.dirname(__file__))
 raw_data_dir = os.path.join(par_dir,r"data/raw/FoodBalanceSheets_E_All_Data_(Normalized).csv")
 country_dir = os.path.join(par_dir, r'data/raw/country-group.xls')
-plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
+scatter_plot_dir = os.path.join(par_dir, r'reports/figures/scatter_')
 
 
 dim_reduction_method = ("pca" ,sklearn.decomposition.PCA(2))
@@ -28,7 +29,8 @@ if not os.path.exists(os.path.join(par_dir,processed_dir)):
 processed_scaled_save_path = os.path.join(par_dir, processed_dir,"dataset_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals[1:])
 processed_unscaled_save_path = os.path.join(par_dir, processed_dir, "dataset_cut-%s-%s_zanan-%s.csv" % param_vals[2:])
 dataset_2d_save_path = os.path.join(par_dir, processed_dir, "dataset_2d_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.csv" % param_vals)
-plot_dir = os.path.join(par_dir, "reports","figures","scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
+scatter_plot_dir = os.path.join(par_dir, "reports","figures","scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
+line_plot_dir = os.path.join(par_dir, "reports","figures","line_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
 preprocessing_report_path = os.path.join(par_dir, "reports", "preprocessing-report_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.json" % param_vals)
 reduction_report_path = os.path.join(par_dir, "reports", "reduction-report_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s.json" % param_vals)
 
@@ -58,10 +60,22 @@ scatter_plots = Scatter(
     bidimensional_dataset = dataset_2d_save_path
 )
 
-plot_dir = os.path.join(par_dir, "reports","figures", "scatter_reduction-%s_scaler-%s_cut-%s-%s_zanan-%s" % param_vals)
 
 scatter_plots.plot(
-    file_dir_prefix = plot_dir,
+    file_dir_prefix = scatter_plot_dir,
     years=list(range(1961,2014)),
+    extension = '.png'
+)
+
+
+
+line_plots = Line(
+    not_normalized_dataset = processed_unscaled_save_path
+)
+
+
+line_plots.plot(
+    file_dir_prefix = line_plot_dir,
+    countries=['Chile','United States of America'],
     extension = '.png'
 )

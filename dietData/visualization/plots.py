@@ -41,6 +41,36 @@ class Scatter:
             fig.savefig(full_file_path)
 
             fig.clf()
+class Line:
+    def __init__(
+        self,
+        not_normalized_dataset
+    ):
+        self.dataset = pd.read_csv(not_normalized_dataset)
+        self.foods = self.dataset.columns[3:]
 
-    # def tsne_dif(self, country="all", save_dir=r'../../report/figures/dif'):
-    #     if country="all":
+    def plot(self, countries,file_dir_prefix = r'../../report/figures/line_',extension = '.png'):
+        save_dir = os.path.join(file_dir_prefix)
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        for food in self.foods:
+            plt.axhline(y=self.dataset[food].mean(), label='Mean', linestyle='--',  alpha=0.5)
+            for country in countries:
+                plt.plot(
+                self.dataset[self.dataset.Area == country]['Year Code'],
+                self.dataset[self.dataset.Area == country][food],
+                label = country
+            )
+            plt.title(food)
+            plt.xlabel('Year')
+            plt.ylabel('Per capita consumption (kg)')
+            plt.tight_layout()
+            plt.legend()
+
+            full_file_path = os.path.join(save_dir, str(food) + extension)
+
+
+            plt.savefig(full_file_path)
+
+            plt.clf()
+
