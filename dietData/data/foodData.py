@@ -72,6 +72,18 @@ class UN_food():
             self.food_pivot[col].fillna(self.food_pivot[col].median(), inplace=True)
         asas=363636
 
+        # Correlation analysys
+        fc = self.food_pivot[3:].corr(method='spearman', min_periods=1).abs()
+        corr_matrix = fc.abs()
+        upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(np.bool))
+        to_drop = [column for column in upper.columns if any(upper[column] > 0.9)]
+        to_drop_pair = []
+        for food_col in to_drop:
+            food_col_pair = upper.idxmax()[food_col]
+            to_drop_pair.append(food_col_pair)
+        print('Columns to remove: ')
+        print(to_drop, to_drop_pair)
+
         self.food_pivot[self.food_pivot.columns[3:]] = standard.fit_transform(self.food_pivot[self.food_pivot.columns[3:]])
         self.food_pivot = self.food_pivot.reset_index(drop=True)
         awer=2134
@@ -85,6 +97,7 @@ class UN_food():
         data_2d.columns = ['Area','Year', 'x', 'y']
 
         self.PCAComp = pd.DataFrame(method.components_, columns=self.food_pivot.columns[3:], index=['PC-1', 'PC-2'])
+        self.sortPCA = self.PCAComp.T.iloc[self.PCAComp.T.abs()["PC-1"].argsort()]
         # data_2d.to_csv(reduced_data_dir,index=False)
         self.data_2d = data_2d
 
