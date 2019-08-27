@@ -24,5 +24,4 @@ class Movement:
             movement = sum(distances)
             movements.append((country,movement))
         movements = sorted(movements, key=lambda x: x[1], reverse=True)
-        with open(destination_path, 'w', encoding='utf-8') as f:
-                    json.dump(movements, f, ensure_ascii=False, indent=4)
+        pd.DataFrame(movements,columns=['country','displacement']).to_csv(destination_path, index=False)
