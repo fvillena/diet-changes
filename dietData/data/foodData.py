@@ -29,10 +29,17 @@ class UN_food():
 
     def clean_euro_data(self, euro_dir, standard = sklearn.preprocessing.StandardScaler(),
                         data_ratio_cut_columns=.05, data_ratio_cut_rows=.05,
-                        countries_to_drop=["Bolivia", "El Salvador","Honduras", "Panama", "Paraguay"]):
+                        countries_to_drop=["Bolivia", "El Salvador","Honduras", "Panama", "Paraguay"],
+                        foods_to_drop=["Sports Drinks","RTD Coffee", "Concentrates"]):
 
         for country in countries_to_drop:
             self.processed_data = self.processed_data.drop(self.processed_data[self.processed_data["Area"]==country].index)
+
+        for food in foods_to_drop:
+            self.processed_data = self.processed_data[self.processed_data.columns[self.processed_data.columns != food]]
+
+        # [np.where(self.food_pivot.isnull().values)]
+
         self.processed_data = self.processed_data[self.processed_data["Year"] != 2004]
         self.food_info = self.processed_data
         self.zero_as_na = False
@@ -134,7 +141,9 @@ class UN_food():
 
 
     def plot_PCA_overtime(self, plot_dir):
-
+        pc1 = [self.PCAComp[col]["PC-1"] for col in self.PCAComp]
+        pc2 = [self.PCAComp[col]["PC-2"] for col in self.PCAComp]
+        name = self.PCAComp.columns
         years = self.data_2d["Year"].unique()
         countries = self.data_2d["Area"].unique()
 
@@ -158,6 +167,8 @@ class UN_food():
             plt.tight_layout()
 
             full_file_path = os.path.join(save_dir, str(year) + ".png")
+
+
 
             plt.savefig(full_file_path)
 
