@@ -28,30 +28,33 @@ america_food_data = UN_food(raw_dir=america_dir,
 
 america_food_data.clean_euro_data(america_dir,
                                   data_ratio_cut_columns=data_cut,
-                                  standard=standard)
+                                  standard=standard,
+                                  foods_to_drop=[])
 
 america_food_data.PCA_analysis()
 america_plot_dir = os.path.join(par_dir, "reports","figures", "rowCut%sAmericas_standard%s_NANMedian"
                                 % (america_food_data.data_ratio_cut_rows, stan_str))
 america_food_data.plot_PCA_overtime(plot_dir=america_plot_dir)
 
+#
+#
+#
+# asdf=343
 
-asdf=343
+euro_dir = os.path.join(par_dir, "data", "raw", "europePreprocessed2.csv")
 
-# euro_dir = os.path.join(par_dir, "data", "raw", "europePreprocessed2.csv")
-#
-# europe_food_data = UN_food(raw_dir=euro_dir,
-#                             country_dir=country_dir)
-#
-#
-# europe_food_data.clean_euro_data(euro_dir,
-#                                   data_ratio_cut_columns=data_cut,
-#                                  standard=standard)
-#
-# europe_food_data.PCA_analysis()
-# europe_plot_dir = os.path.join(par_dir, "reports","figures", "rowCut%sEurope_standard%s_NANMedian"
-#                                % (europe_food_data.data_ratio_cut_rows,stan_str))
-# europe_food_data.plot_PCA_overtime(plot_dir=europe_plot_dir)
+europe_food_data = UN_food(raw_dir=euro_dir,
+                            country_dir=country_dir)
+
+
+europe_food_data.clean_euro_data(euro_dir,
+                                  data_ratio_cut_columns=data_cut,
+                                 standard=standard)
+
+europe_food_data.PCA_analysis()
+europe_plot_dir = os.path.join(par_dir, "reports","figures", "rowCut%sEurope_standard%s_NANMedian"
+                               % (europe_food_data.data_ratio_cut_rows,stan_str))
+europe_food_data.plot_PCA_overtime(plot_dir=europe_plot_dir)
 #
 #
 # eurAmer_dir = os.path.join(par_dir, "data", "raw", "europePreprocessed2.csv")
