@@ -21,7 +21,7 @@ class Movement:
             for i in range(1,len(positions)):
                 d = distance(positions[i-1], positions[i], euclideanDistance)
                 distances.append(d)
-            movement = sum(distances)
+            movement = sum(distances)/len(distances)
             movements.append((country,movement))
         movements = sorted(movements, key=lambda x: x[1], reverse=True)
         pd.DataFrame(movements,columns=['country','displacement']).to_csv(destination_path, index=False)
